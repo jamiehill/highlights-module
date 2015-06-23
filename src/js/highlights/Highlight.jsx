@@ -28,6 +28,15 @@ export default React.createClass({
 				<div className="table-cell align-center">
 					<i className="entypo-chart-bar"></i>
 				</div>
+				<div className="table-cell align-center">
+					<i className="entypo-chart-bar"></i>
+				</div>
+				<div className="table-cell align-center">
+					<i className="entypo-chart-bar"></i>
+				</div>
+				<div className="table-cell align-center">
+					<i className="entypo-chart-bar"></i>
+				</div>
 				<div className="table-cell align-center price">
 					{attribs.numMarkets}
 				</div>
