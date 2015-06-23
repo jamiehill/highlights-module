@@ -101,7 +101,7 @@ System.config({
 
 If we now wanted to import, say, `src/js/base/BaseView.js` into the parent application, we can simply say:
 
-`import 'base/BaseView`
+`import BaseView from 'base/BaseView'`
 
 **Voila!**
 
