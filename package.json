@@ -1,13 +1,14 @@
 {
-  "name": "core-module",
+  "name": "base-module",
   "version": "1.0.0",
   "description": "Starting block for all sportsbook module implementations",
+  "main": "src/js/base/BaseView.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jamiehill/core-module.git"
+    "url": "git+https://github.com/jamiehill/base-module.git"
   },
   "keywords": [
     "Base",
@@ -16,9 +17,9 @@
   "author": "James Hill",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jamiehill/core-module/issues"
+    "url": "https://github.com/jamiehill/base-module/issues"
   },
-  "homepage": "https://github.com/jamiehill/core-module#readme",
+  "homepage": "https://github.com/jamiehill/base-module#readme",
   "devDependencies": {
     "jspm": "^0.15.7"
   },
