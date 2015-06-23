@@ -18,7 +18,7 @@ Clone the repository, changing the remote origin to point to the new module's re
 You'll now have a copy of the base-module in your new module repository, which should be pre-configured to run out-of-the-box.
 
 
-Required actions
+Setup
 ----------------
 
 Inside the `./src/module/js` folder in the new module, is a folder called `base`.  This folder name dictates hows the module should be namespaced, to avoid import collisions from other modules.  As such, it's name should be changed, to something appropriate for the module.
