@@ -26,6 +26,11 @@ Setup
 
 **1. Renaming the module**
 
+The `name` field, in `package.json`, should be updated to reflect the name of the new module.  Lowercase/No whitespace.
+
+
+**2. Renaming the packages**
+
 Inside the `./src/module/js` folder in the new module, is a folder called `base`.  This folder name dictates hows the module should be namespaced, to avoid import collisions from other modules.  As such, it's name should be changed, to something appropriate for the module.
 
 The are several other files in the root of `./src/module/js`.  These are files required to boot the module up independantly of a shell application, and shouldn't be modify or removed.
@@ -33,7 +38,7 @@ The are several other files in the root of `./src/module/js`.  These are files r
 When importing a module into a shell application, the only files visible to the application are what's inside the namespace folder we renamed earlier.
 
 
-**2. Configure entrypoint**
+**3. Configure entrypoint**
 
 If the module is a view module, we need to configure the top level class for the module to be displayed.  This should added to the `'main'` field in `package.json`.
 
@@ -49,6 +54,6 @@ If the top level view to be displayed has the path `src/module/js/mymodule/MyMod
 This is picked up by the module loader, in order to correctly bootstrap and render the module.
 
 
-**3. Change repository endpoint**
+**4. Change repository endpoint**
 
 The `repository` url, `homepage` field, and `bugs` url, in `package.json`, should be updated to reflect the new repository housing the module.
