@@ -74,11 +74,36 @@ for example:
 
 `git submodule add https://github.com/jamiehill/core-module.git modules/core-module`
 
-**2. Pulling submodule source, when cloning the parent***
+**2. Pulling submodule source, when cloning the parent**
 
 When a contributor clones the parent application, the submodule directories are not populated by default.  To pull down their source, you should:
 
 `git submodule init` then `git submodule update`
+
+**3. Mapping the included module in the parent application**
+
+Once imported into the parent application, the module's root content folder needs adding to the systemjs configuration, so that the dependecies the module includes, can be used in the application.
+
+Inside `config.js` under the `"paths"` object, map the name we want the dependency paths starting with, to the actual location in the parent application, ie:
+
+```
+System.config({
+  "baseURL": "./js"
+  },
+  "paths": {
+    "*": "*.js",
+    "github:*": "../../vendor/github/*.js",
+    "npm:*": "../../vendor/npm/*.js",
+    "base*":"../../../modules/my-module/src/js/base*",
+  }
+});
+```
+
+If we now wanted to import, say, `src/js/base/BaseView.js` into the parent application, we can simply say:
+
+`import 'base/BaseView`
+
+**Voila!**
 
 
 
