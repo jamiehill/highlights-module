@@ -23,6 +23,7 @@ Setup
 
 ***NB If simply creating a library component, rather than a loadable, view module, the following steps are not required.***
 
+
 **1. Renaming the module**
 
 Inside the `./src/module/js` folder in the new module, is a folder called `base`.  This folder name dictates hows the module should be namespaced, to avoid import collisions from other modules.  As such, it's name should be changed, to something appropriate for the module.
@@ -46,3 +47,8 @@ If the top level view to be displayed has the path `src/module/js/mymodule/MyMod
 ```
 
 This is picked up by the module loader, in order to correctly bootstrap and render the module.
+
+
+**3. Change repository endpoint**
+
+The `repository` url, `homepage` field, and `bugs` url, in `package.json`, should be updated to reflect the new repository housing the module.
