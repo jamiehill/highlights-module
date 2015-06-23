@@ -34,7 +34,7 @@ When importing a module into a shell application, the only files visible to the 
 
 If the module is a view module, we need to configure the top level class for the module to be displayed.  This should added to the `'main'` field in `package.json`.
 
-If the top level view to be displayed has the path `src/module/js/mymodule/MyModuleView.js`, we'd add that entry into package.json as such:
+If the top level view to be displayed has the path `src/module/js/mymodule/MyModuleView.js`, we'd add that entry into `package.json` as such:
 
 ```
 {
