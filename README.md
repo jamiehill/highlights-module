@@ -68,11 +68,11 @@ To use a module in a shell/parent application, it simply needs to be declared as
 
 First we need to add the repo of the module we require, as a submodule in our application, specifying in which directory the submodule should be added.  For consistency sake, the directory the submodule is added to, should be of the format (and location)
 
-```./modules/my-module```
+`./modules/my-module`
 
 for example:
 
-```git submodule add https://github.com/jamiehill/core-module.git modules/core-module```
+`git submodule add https://github.com/jamiehill/core-module.git modules/core-module`
 
 
 
