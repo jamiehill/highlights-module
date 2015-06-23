@@ -1,0 +1,51 @@
+{
+  "name": "base-module",
+  "version": "1.0.0",
+  "description": "Starting block for all sportsbook module implementations",
+  "main": "src/module/js/base/BaseView.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamiehill/base-module.git"
+  },
+  "keywords": [
+    "Base",
+    "Module"
+  ],
+  "author": "James Hill",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamiehill/base-module/issues"
+  },
+  "homepage": "https://github.com/jamiehill/base-module#readme",
+  "devDependencies": {
+    "jspm": "^0.15.7"
+  },
+  "jspm": {
+    "directories": {
+      "jspmPackages": "vendor",
+      "packages": "vendor"
+    },
+    "dependencies": {
+      "backbone": "npm:backbone@1.1.2",
+      "backbone.babysitter": "github:marionettejs/backbone.babysitter@0.1.6",
+      "backbone.radio": "npm:backbone.radio@0.9.0",
+      "backbone.wreqr": "github:marionettejs/backbone.wreqr@1.3.2",
+      "di-lite": "npm:di-lite@0.3.3",
+      "jquery": "github:components/jquery@2.1.4",
+      "jsx": "github:floatdrop/plugin-jsx@1.1.0",
+      "marionettejs/backbone.marionette": "github:marionettejs/backbone.marionette@2.4.1",
+      "process": "npm:process@0.11.1",
+      "react": "npm:react@0.14.0-alpha3",
+      "systemjs/plugin-text": "github:systemjs/plugin-text@0.0.2",
+      "underscore": "npm:lodash@3.9.3"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.1.13",
+      "babel-runtime": "npm:babel-runtime@^5.1.13",
+      "core-js": "npm:core-js@^0.9.4"
+    }
+  }
+}
