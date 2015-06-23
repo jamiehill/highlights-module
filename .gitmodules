@@ -1,0 +1,3 @@
+[submodule "modules/core-module"]
+	path = modules/core-module
+	url = https://github.com/jamiehill/core-module.git
