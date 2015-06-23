@@ -21,6 +21,8 @@ You'll now have a copy of the base-module in your new module repository, which s
 Setup
 -----
 
+***NB If simply creating a library component, rather than a loadable, view module, the following steps are not required.***
+
 **1. Renaming the module**
 
 Inside the `./src/module/js` folder in the new module, is a folder called `base`.  This folder name dictates hows the module should be namespaced, to avoid import collisions from other modules.  As such, it's name should be changed, to something appropriate for the module.
