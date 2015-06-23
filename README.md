@@ -82,7 +82,7 @@ When a contributor clones the parent application, the submodule directories are 
 
 **3. Mapping the included module in the parent application**
 
-Once imported into the parent application, the module's root content folder needs adding to the systemjs configuration, so that the dependecies the module includes, can be used in the application.
+Once imported into the parent application, the module's root content folder - as defined above in `Setup #2` - needs adding to the systemjs configuration, so that the dependecies the module includes, can be used in the application.
 
 Inside `config.js` under the `"paths"` object, map the name we want the dependency paths starting with, to the actual location in the parent application, ie:
 
