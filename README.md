@@ -57,3 +57,22 @@ This is picked up by the module loader, in order to correctly bootstrap and rend
 **4. Change repository endpoint**
 
 The `repository` url, `homepage` field, and `bugs` url, in `package.json`, should be updated to reflect the new repository housing the module.
+
+
+Using
+-----
+
+To use a module in a shell/parent application, it simply needs to be declared as a git submodule.  The module repo will then be linked as a nested repo, inside of the parent application.
+
+**1. Add module to parent application***
+
+First we need to add the repo of the module we require, as a submodule in our application, specifying in which directory the submodule should be added.  For consistency sake, the directory the submodule is added to, should be of the format (and location)
+
+```./modules/my-module```
+
+for example:
+
+```git submodule add https://github.com/jamiehill/core-module.git modules/core-module```
+
+
+
