@@ -1,13 +1,12 @@
-import AppLayout from './AppLayout';
 import DeferredQueue from 'core/defer/DeferredQueue';
 import Backbone from 'backbone';
 
-var Application = Marionette.Application.extend({
-    bootstrap: [
-        'app/AppConfig',
-        'core/bootstrap/DomainResolver'
-    ],
+import React from 'react';
+import View from 'core/react/ReactView';
+import Component from './highlights/HighlightsView.jsx!';
 
+var Application = Marionette.Application.extend({
+    bootstrap: [],
 
     initialize() {
         this.$body  = $(document.body);
@@ -17,7 +16,6 @@ var Application = Marionette.Application.extend({
         this.addRegions({"main": "body"});
         this.prestart();
     },
-
 
     prestart() {
         console.log('Module: Bootstrap - Start');
@@ -29,26 +27,44 @@ var Application = Marionette.Application.extend({
         });
     },
 
-
     onStart() {
         console.log('App: Start');
         this.ctx.initialize();
-        var module;
 
-        System.import(pkg.main).then(function(view) {
-            module = App.module('Module', Module);
-            module.regionName = 'main'
-            module.view = view;
-            module.start();
+		var module, collection = this.mockCollection(),
+			Comp = React.createFactory(Component);
 
-            // then startup the routers
-            Backbone.history.start({pushState: true, root: this.Urls.root || ''});
-        })
+		module = App.module('Module', Module);
+		module.regionName = 'main';
+		module.options = { component: Comp, data: { collection: collection }};
+		module.view = View;
+		module.start();
+
+		// then startup the routers
+		Backbone.history.start({pushState: true, root: ''});
     },
 
     stop() {
         Backbone.history.stop();
-    }
+    },
+
+	mockCollection() {
+		var models = _.times(12, function(n) {
+			return new Backbone.Model({
+				id: n,
+				date: "Today",
+				time: "10:30",
+				homeTeam: "Middlesbrough",
+				homePrice: "1.3",
+				drawTeam: "Draw",
+				drawPrice: "2.4",
+				awayTeam: "Manchester United",
+				awayPrice: "1.1",
+				numMarkets: "+34"
+			});
+		});
+		return new Backbone.Collection(models);
+	}
 });
 
 
@@ -66,7 +82,7 @@ var Module = Marionette.Module.extend({
 
         // attach the view
         if (this.view && this.regionName) {
-            this.app[this.regionName].show(new this.view());
+            this.app[this.regionName].show(new this.view(this.options));
         }
     },
 });

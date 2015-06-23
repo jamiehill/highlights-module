@@ -4,3 +4,4 @@ import _ from 'underscore';
 import Marionette from 'backbone.marionette';
 // setup globals
 window.Marionette = Marionette;
+import di from 'di-lite';
