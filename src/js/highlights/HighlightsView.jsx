@@ -1,5 +1,5 @@
 import React from 'react';
-import mixin from 'core/react/BackboneMixin';
+import mixin from 'core/system/react/BackboneMixin';
 import HighlightsPanel from './HighlightsPanel.jsx!';
 import Highlight from './Highlight.jsx!';
 
