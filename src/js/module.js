@@ -38,7 +38,7 @@ var Application = Marionette.Application.extend({
         System.import(pkg.main).then(function(view) {
             module = App.module('Module', Module);
             module.regionName = 'main'
-            module.view = view;
+            module.viewClass = view;
             module.start();
 
             // then startup the routers
@@ -59,14 +59,14 @@ var Application = Marionette.Application.extend({
 var Module = Marionette.Module.extend({
     startWithParent: false,
     regionName: '',
-    view: null,
+    viewClass: null,
 
     onStart() {
         console.log("Module: started");
 
         // attach the view
-        if (this.view && this.regionName) {
-            this.app[this.regionName].show(new this.view());
+        if (this.viewClass && this.regionName) {
+            this.app[this.regionName].show(new this.viewClass());
         }
     },
 });
