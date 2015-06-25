@@ -1,5 +1,5 @@
 import AppLayout from './AppLayout';
-import DeferredQueue from 'core/defer/DeferredQueue';
+import DeferredQueue from 'core/system/defer/DeferredQueue';
 import Backbone from 'backbone';
 
 var Application = Marionette.Application.extend({
