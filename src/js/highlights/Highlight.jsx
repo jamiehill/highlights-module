@@ -1,43 +1,43 @@
 import React from 'react';
 import moment from 'moment';
 
-
 export default React.createClass({
 	render: function() {
-		var market = this.props.model.Markets.findWhere({type: 'MRES'}),
-			selectionH = market.Selections.at(0),
-			selectionD = market.Selections.at(1),
-			selectionA = market.Selections.at(2);
-		var attribs = this.props.model.attributes;
-		var day  = moment(attribs.eventTime).format('ddd');
-		var time = moment(attribs.eventTime).format('HH:mmA');
+		var model  = this.props.model.attributes,
+			market = this.props.model.Markets.findWhere({type: 'MRES'});
+
 		return (
 			<div className="table-row">
 				<div className="table-cell">
-					<span className="date">{day}</span>
-					<span className="time">{time}</span>
+					<span className="date">{moment(model.eventTime).format('ddd')}</span>
+					<span className="time">{moment(model.eventTime).format('HH:mmA')}</span>
 				</div>
 				<div className="table-cell align-right">
-					{selectionH.get('name')}
+					{model.participantA}
 				</div>
-				<div className="table-cell align-center price">
-					{selectionH.get('decimalOdds')}
-				</div>
-				<div className="table-cell align-center price">
-					{selectionD.get('decimalOdds')}
-				</div>
-				<div className="table-cell align-center price">
-					{selectionA.get('decimalOdds')}
-				</div>
+				{market.Selections.map(this.renderItem)}
 				<div className="table-cell align-left">
-					{selectionA.get('name')}
+					{model.participantB}
 				</div>
 				<div className="table-cell align-center">
 					<i className="entypo-chart-bar"></i>
 				</div>
 				<div className="table-cell align-center price">
-					+{attribs.numMarkets}
+					+{model.numMarkets}
 				</div>
+			</div>
+		)
+	},
+
+	/**
+	 * Renders the price display
+	 * @param model
+	 * @returns {XML}
+	 */
+	renderItem: function(model) {
+		return (
+			<div className="table-cell align-center price">
+				{model.getOdds()}
 			</div>
 		)
 	}
