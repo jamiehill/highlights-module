@@ -1,5 +1,9 @@
 import Radio from 'backbone.radio';
-import AppLayout from './AppLayout';
+import timestamp from 'core/system/NiceConsole';
+
+import React from 'react';
+import View from 'core/react/ReactView';
+import Component from './highlights/HighlightsView.jsx!';
 
 var Application = Marionette.Application.extend({
 
@@ -25,36 +29,29 @@ var Application = Marionette.Application.extend({
 		window.ctx = this.ctx = di.createContext();
 
 		// initialize src layout
-		this.layout = new AppLayout();
-		this.layout.render();
+		this.addRegions({"main": "body"});
 
 		timestamp(console);
 		this.prestart();
     },
 
 
-    prestart() {
-		var that = this;
-		System.import('core/CoreModule').then(function(inst){
-			var module = App.module('Core', inst.default);
-			module.boot(that.bootstrap).then(that.start);
-		});
-    },
-
-
+	/**
+	 * On start kick off the views
+	 */
     onStart() {
 		console.log('App: Start');
 		this.ctx.initialize();
 
-		// initialize and start each required module
-		_.each(this.modules, function(Module, name) {
-			App.module(name, Module).start();
-		});
+		var module = App.module('Module', Module);
+		module.regionName = 'main';
+		module.options = {
+			component: React.createFactory(Component)
+		};
+		module.view = View;
+		module.start();
 
-		// then startup the routers
-		console.log("Backbone: history - started");
-		Backbone.history.on('route', this.onRoute);
-		Backbone.history.start({pushState: true, root: this.Urls.root || ''});
+		this.postStart();
     },
 
 	/**
@@ -63,14 +60,32 @@ var Application = Marionette.Application.extend({
 	onStop() {
 		console.log("Backbone: history - stopped");
 		Backbone.history.stop();
+		Radio.reset();
+	},
+
+
+
+	/**
+	 * kick the boot sequence off
+	 */
+	prestart() {
+		console.log('App: PreStart');
+		var that = this;
+		System.import('core/CoreModule').then(function(inst){
+			var module = App.module('Core', inst.default);
+			module.boot(that.bootstrap).then(that.start);
+		});
 	},
 
 	/**
-	 * Broadcast global route changes
+	 * Startup router and history
 	 */
-		onRoute(router, name, args) {
-		console.log('Router: '+name);
-		App.router.trigger('route:change', name);
+	postStart() {
+		console.log('App: PostStart');
+		this.Router = appRouter.start();
+
+		var options = {pushState: true, root: this.Urls.root || ''};
+		Backbone.history.start(options);
 	}
 });
 
