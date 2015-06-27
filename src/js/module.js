@@ -1,69 +1,76 @@
-import DeferredQueue from 'core/defer/DeferredQueue';
-import Backbone from 'backbone';
-
-import React from 'react';
-import View from 'core/react/ReactView';
-import Component from './highlights/HighlightsView.jsx!';
+import Radio from 'backbone.radio';
+import AppLayout from './AppLayout';
 
 var Application = Marionette.Application.extend({
-    bootstrap: [],
+
+	// setup our channels
+	session: Radio.channel('session'),
+	socket:  Radio.channel('socket'),
+	router:  Radio.channel('router'),
+	bus:  	 Radio.channel('bus'),
+
+
+    bootstrap: [
+		'highlights/HighlightsConfig',
+		'core/system/bootstrap/DomainResolver',
+		'core/system/bootstrap/MarionetteConfig',
+		'core/system/bootstrap/GetSportData'
+    ],
+
 
     initialize() {
-        this.$body  = $(document.body);
-        this.ctx = di.createContext();
+		_.bindAll(this, 'start');
 
-        // initialize region/s
-        this.addRegions({"main": "body"});
-        this.prestart();
+		window.App = this;
+		window.ctx = this.ctx = di.createContext();
+
+		// initialize src layout
+		this.layout = new AppLayout();
+		this.layout.render();
+
+		timestamp(console);
+		this.prestart();
     },
+
 
     prestart() {
-        console.log('Module: Bootstrap - Start');
-        var queue = new DeferredQueue(this.bootstrap),
-            that  = this;
-        queue.init().then(function() {
-            console.log('Module: Bootstrap - Complete');
-            that.start();
-        });
+		var that = this;
+		System.import('core/CoreModule').then(function(inst){
+			var module = App.module('Core', inst.default);
+			module.boot(that.bootstrap).then(that.start);
+		});
     },
+
 
     onStart() {
-        console.log('App: Start');
-        this.ctx.initialize();
+		console.log('App: Start');
+		this.ctx.initialize();
 
-		var module, collection = this.mockCollection(),
-			Comp = React.createFactory(Component);
-
-		module = App.module('Module', Module);
-		module.regionName = 'main';
-		module.options = { component: Comp, data: { collection: collection }};
-		module.view = View;
-		module.start();
+		// initialize and start each required module
+		_.each(this.modules, function(Module, name) {
+			App.module(name, Module).start();
+		});
 
 		// then startup the routers
-		Backbone.history.start({pushState: true, root: ''});
+		console.log("Backbone: history - started");
+		Backbone.history.on('route', this.onRoute);
+		Backbone.history.start({pushState: true, root: this.Urls.root || ''});
     },
 
-    stop() {
-        Backbone.history.stop();
-    },
+	/**
+	 * Shut down applicatiopn
+	 */
+	onStop() {
+		console.log("Backbone: history - stopped");
+		Backbone.history.stop();
+	},
 
-	mockCollection() {
-		var models = _.times(12, function(n) {
-			return new Backbone.Model({
-				id: n,
-				date: "Today",
-				time: "10:30",
-				homeTeam: "Middlesbrough",
-				homePrice: "1.3",
-				drawTeam: "Draw",
-				drawPrice: "2.4",
-				awayTeam: "Manchester United",
-				awayPrice: "1.1",
-				numMarkets: "+34"
-			});
-		});
-		return new Backbone.Collection(models);
+	/**
+	 * Broadcast global route changes
+	 */
+		onRoute(router, name, args) {
+		console.log('Router: '+name);
+		App.router.trigger('route:change', name);
 	}
 });
 
@@ -75,14 +82,14 @@ var Application = Marionette.Application.extend({
 var Module = Marionette.Module.extend({
     startWithParent: false,
     regionName: '',
-    view: null,
+    viewClass: null,
 
     onStart() {
         console.log("Module: started");
 
         // attach the view
-        if (this.view && this.regionName) {
-            this.app[this.regionName].show(new this.view(this.options));
+        if (this.viewClass && this.regionName) {
+            this.app[this.regionName].show(new this.viewClass());
         }
     },
 });
@@ -90,6 +97,4 @@ var Module = Marionette.Module.extend({
 
 // exports singleton instance
 let inst = new Application();
-window.App = inst;
-window.ctx = inst.ctx;
 export default inst;
