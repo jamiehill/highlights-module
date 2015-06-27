@@ -11,7 +11,7 @@ var Application = Marionette.Application.extend({
 
 
     bootstrap: [
-		'highlights/HighlightsConfig',
+		//'highlights/HighlightsConfig',
 		'core/system/bootstrap/DomainResolver',
 		'core/system/bootstrap/MarionetteConfig',
 		'core/system/bootstrap/GetSportData'
