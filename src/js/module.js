@@ -2,8 +2,10 @@ import Radio from 'backbone.radio';
 import timestamp from 'core/system/NiceConsole';
 
 import React from 'react';
-import View from 'core/react/ReactView';
+import View from 'core/system/react/ReactView';
 import Component from './highlights/HighlightsView.jsx!';
+import config from './configuration.json!';
+import globals from 'core/Globals';
 
 var Application = Marionette.Application.extend({
 
@@ -45,10 +47,10 @@ var Application = Marionette.Application.extend({
 
 		var module = App.module('Module', Module);
 		module.regionName = 'main';
+		module.viewClass = View;
 		module.options = {
 			component: React.createFactory(Component)
 		};
-		module.view = View;
 		module.start();
 
 		this.postStart();
@@ -70,7 +72,11 @@ var Application = Marionette.Application.extend({
 	 */
 	prestart() {
 		console.log('App: PreStart');
+
+		App.Config  = config;
+		App.Globals = new globals;
 		var that = this;
+
 		System.import('core/CoreModule').then(function(inst){
 			var module = App.module('Core', inst.default);
 			module.boot(that.bootstrap).then(that.start);
@@ -82,7 +88,7 @@ var Application = Marionette.Application.extend({
 	 */
 	postStart() {
 		console.log('App: PostStart');
-		this.Router = appRouter.start();
+		//this.Router = appRouter.start();
 
 		var options = {pushState: true, root: this.Urls.root || ''};
 		Backbone.history.start(options);
@@ -98,13 +104,13 @@ var Module = Marionette.Module.extend({
     startWithParent: false,
     regionName: '',
     viewClass: null,
-
     onStart() {
         console.log("Module: started");
+		this.view = new this.viewClass(this.options);
+		this.region = this.app[this.regionName];
 
-        // attach the view
         if (this.viewClass && this.regionName) {
-            this.app[this.regionName].show(new this.viewClass());
+            this.region.show(this.view);
         }
     },
 });
