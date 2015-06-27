@@ -104,5 +104,5 @@ export default class HighlightsView extends Component {
 	}
 };
 
-// set the factory collection as default props
+// set default props
 HighlightsView.defaultProps = { collection: factory.collection };
