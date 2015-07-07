@@ -8,7 +8,7 @@ export default class HighlightsView extends Component {
 	constructor() {
 		super();
 
-		factory.fetch('MRES', undefined, '0,1,2,3,4,5,6,7,8,9');
+		factory.fetch('', 'SOCCER', '0,1,2,3,4,5,6,7,8,9');
 		_.bindAll(this, 'renderEvent', 'renderPrice');
 	}
 
@@ -34,8 +34,11 @@ export default class HighlightsView extends Component {
 	 * Show all markets
 	 * @param e
 	 */
-	onShowMarkets(e) {
-
+	onShowMarkets(model, e) {
+		e.stopPropagation();
+		var sport = model.get('code').toLowerCase(),
+			eventId = model.id;
+		App.navigate(sport+'/event/'+eventId);
 	}
 
 
@@ -44,6 +47,9 @@ export default class HighlightsView extends Component {
 	 * @returns {XML}
 	 */
 	render() {
+		var eventIds = this.props.collection.pluck('id');
+		App.bus.request('add:eventView', 'SOCCER', eventIds, 'MRES');
+
 		return (
 			<div className="cell cell-4 highlights">
 				<div className="inner-cell">
@@ -64,7 +70,8 @@ export default class HighlightsView extends Component {
 	 */
 	renderEvent(model) {
 		var attribs = model.attributes,
-			market  = model.Markets.findWhere({type: 'MRES'});
+			market  = model.Markets.findWhere({type: 'MRES'}),
+			styles  = {cursor:'pointer'};
 
 		return (
 			<div key={model.id} className="table-row">
@@ -72,17 +79,17 @@ export default class HighlightsView extends Component {
 					<span className="date">{moment(attribs.eventTime).format('ddd')}</span>
 					<span className="time">{moment(attribs.eventTime).format('HH:mmA')}</span>
 				</div>
-				<div className="table-cell align-right">
+				<div className="table-cell align-right" onClick={this.onShowMarkets.bind(this, model)} style={styles}>
 					{attribs.participantA}
 				</div>
 				{market.Selections.map(this.renderPrice)}
-				<div className="table-cell align-left">
+				<div className="table-cell align-left" onClick={this.onShowMarkets.bind(this, model)} style={styles}>
 					{attribs.participantB}
 				</div>
-				<div className="table-cell align-center" onClick={this.onShowStats.bind(this)}>
+				<div className="table-cell align-center" onClick={this.onShowStats.bind(this)} style={styles}>
 					<i className="entypo-chart-bar"></i>
 				</div>
-				<div className="table-cell align-center price" onClick={this.onShowMarkets.bind(this)}>
+				<div className="table-cell align-center price" onClick={this.onShowMarkets.bind(this, model)} style={styles}>
 					+{attribs.numMarkets}
 				</div>
 			</div>
